@@ -36,6 +36,39 @@ Updating the stack is simple. All you need to do is this:
 - After that you can run: ```docker compose up -d```
 - And you're good to go! 
 
+## Security defaults (important)
+This repo is now set up with **safer defaults**:
+- **Ports bind to localhost by default** (`BIND_IP=127.0.0.1`). This prevents exposing admin UIs to your LAN/Internet accidentally.
+- **Containers run as a non-root UID/GID by default** (`MEDIABLADE_UID` / `MEDIABLADE_GID`).
+- **Least-privilege container settings** are enabled (`no-new-privileges`, drop Linux capabilities, log rotation).
+
+If you want LAN access without a reverse proxy, set `BIND_IP=0.0.0.0` in your `.env` (or bind to your LAN IP), and make sure you have a firewall in place.
+
+## Configuration via `.env`
+Copy the example and edit it:
+- `cp .env.example .env`
+
+Key settings:
+- **`BIND_IP`**: `127.0.0.1` (safe default) vs `0.0.0.0` (expose)
+- **`TZ`**: your timezone
+- **`MEDIABLADE_UID` / `MEDIABLADE_GID`**: should match ownership of `./media` and `./downloads`
+
+## Reverse proxy option (Traefik)
+The compose includes an **optional Traefik v3** reverse proxy (with Let's Encrypt).
+
+1. Set these in `.env`:
+   - `LETSENCRYPT_EMAIL`
+   - `TRAEFIK_ENABLE=true`
+   - `JELLYFIN_HOST`, `MEDIAMANAGER_HOST`, `WIZARR_HOST`
+2. Start Traefik:
+   - `docker compose --profile proxy up -d`
+
+If you already run a reverse proxy, you can ignore the Traefik service and just keep `BIND_IP=127.0.0.1`.
+
+## Tdarr GPU options
+- **NVIDIA**: install NVIDIA Container Toolkit on the host, then set `TDARR_NVIDIA_GPUS=all` (or `1`) in `.env`.
+- **Intel/AMD VAAPI**: uncomment the `/dev/dri:/dev/dri` mapping in `docker-compose.yml` and set `RENDER_GID` in `.env` to your host's render group id.
+
 ## Method 2: MediaBlade All-in-One Script
 This script is slightly different. It still installs the same Docker Compose file, prompting you for nearly the same info, but at the same time, it also installs MediaBlade-Organizer.
 
