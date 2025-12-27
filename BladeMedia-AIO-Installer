@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-# Back-compat wrapper for the old name.
-# Prefer running: ./MediaBlade-AIO-Installer
-
-script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-exec "${script_dir}/MediaBlade-AIO-Installer" "$@"

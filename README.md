@@ -25,7 +25,7 @@ Overall, this uses Docker Compose. I’ve provided two different ways to run thi
 You can run the services by grabbing `docker-compose.yml`, creating the folders (`media/`, `downloads/`, `tdarr_cache/`) next to it, then running `docker compose up -d`.
 
 2. Automated installation script.
-In this repository, you can find a bash script. Use wget to get that onto your system, run `chmod +x setup.sh` and run `bash setup.sh` to start the installer. It will create the directories and write out a `docker-compose.yml`.
+If you want to generate folders + `.env` automatically, use the AIO installer instead (Method 2).
 
 ## Updating
 Updating the stack is simple. All you need to do is this:
